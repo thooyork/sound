@@ -24,7 +24,7 @@ html,body{
     font-family:'Helvetica Neue', sans-serif;
     font-size:20px;
     padding:10px 20px;
-    background-color:rgba(0,0,0,.25);
+    background-color:rgba(255,255,255,.25);
     border:1px solid #FFF;
     text-transform: uppercase;
     cursor:pointer;

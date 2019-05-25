@@ -42,7 +42,7 @@ function init(){
 
     // load a sound and set it as the Audio object's buffer
     var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( '../sounds/ambient.mp3', function( buffer ) {
+    audioLoader.load( '../sounds/firewinds.mp3', function( buffer ) {
         sound.setBuffer( buffer );
         sound.setLoop(true);
         sound.setVolume(0.5);
@@ -58,8 +58,8 @@ function init(){
 
     //SOUND
 	
-    var axesHelper = new THREE.AxesHelper( 50 );
-    scene.add( axesHelper );
+    // var axesHelper = new THREE.AxesHelper( 50 );
+    // scene.add( axesHelper );
 
     var planegeometry = new THREE.PlaneGeometry( 270, 90, 110, 45 );
     var planematerial = new THREE.MeshStandardMaterial({
