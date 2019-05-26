@@ -31,8 +31,6 @@ function init(){
         }
     });
 
-
-
     // create an AudioListener and add it to the camera
     var listener = new THREE.AudioListener();
     camera.add( listener );
@@ -144,13 +142,23 @@ function init(){
       //  makeWaves(offset);
 
         var data = analyser.getAverageFrequency();
-        
+        //var data = analyser.getFrequencyData(); // Array of frequencies
+       
         adjustMesh(offset, data);
     }
 
     
-
     animate();
+
+    var onWindowResize = function(){
+       
+        camera.aspect = domEl.offsetWidth / domEl.offsetHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(domEl.offsetWidth, domEl.offsetHeight);
+    };
+
+    window.addEventListener( 'resize', onWindowResize, false );
 
 };
 
