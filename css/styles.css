@@ -32,7 +32,46 @@ html,body{
 .buttoncontainer{
     position:absolute;
     z-index:2;
-    bottom:30px;
+    top:12%;
     left:50%;
     transform:translateX(-50%);
 }
+
+.btn {
+    transition: .5s;
+    position:relative;
+    display: inline-block;
+    box-sizing: border-box;
+    height: 40px;
+    width:40px;
+    left:25px;
+    top:20px;
+    color:#FFF;
+    border:1px solid #FFF;
+    text-transform: uppercase;
+    cursor:pointer;
+    opacity:0;
+    border-color: transparent transparent transparent #FFFFFF;
+    transition: 100ms all ease;
+    will-change: border-width;
+  
+    // play state
+    border-style: solid;
+    border-width: 25px 0 25px 47px;
+  }
+
+  .btn.pause {
+    border-style: double;
+    height:47px;
+    border-width: 0px 0 0px 40px;
+  }
+
+  .style{
+      position:absolute;
+      z-index:5;
+      top:10px;
+      left:10px;
+      color:#FFFFFF;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; 
+  }

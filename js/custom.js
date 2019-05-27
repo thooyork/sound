@@ -4,6 +4,8 @@ function rand(min, max){
 };
 
 function init(){
+
+    var style = 'wave';
      
     var renderer = new THREE.WebGLRenderer({ 
         antialias: true,
@@ -17,17 +19,30 @@ function init(){
 
     var camera = new THREE.PerspectiveCamera( 55, domEl.offsetWidth / domEl.offsetHeight, 1, 500 ); 
     var scene = new THREE.Scene();
+    //STYLE
+    var stylebtn = document.getElementById('style');
+    stylebtn.addEventListener('mousedown', function(e){
+        if(style === 'wave'){
+            style = 'noise';
+        }
+        else{
+            style = 'wave';
+        }
+    });
+    //STYLE
 
     //SOUND
     var playbtn = document.getElementById('sound');
     playbtn.addEventListener('mousedown', function(e){
         if(!sound.isPlaying){
             sound.play();
-            playbtn.innerHTML = 'pause';
+            // playbtn.innerHTML = 'pause';
+            playbtn.classList.add('pause');
         }
         else{
             sound.pause();
-            playbtn.innerHTML = 'play';
+            // playbtn.innerHTML = 'play';
+            playbtn.classList.remove('pause');
         }
     });
 
@@ -40,7 +55,7 @@ function init(){
 
     // load a sound and set it as the Audio object's buffer
     var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( '../sounds/firewinds.mp3', function( buffer ) {
+    audioLoader.load( '../sounds/ambient.mp3', function( buffer ) {
         sound.setBuffer( buffer );
         sound.setLoop(true);
         sound.setVolume(0.5);
@@ -59,7 +74,7 @@ function init(){
     // var axesHelper = new THREE.AxesHelper( 50 );
     // scene.add( axesHelper );
 
-    var planegeometry = new THREE.PlaneGeometry( 270, 90, 110, 45 );
+    var planegeometry = new THREE.PlaneGeometry( 130, 130, 75, 75 );
     var planematerial = new THREE.MeshStandardMaterial({
         color:0xFFFFFF,
         wireframe:true,
@@ -72,30 +87,30 @@ function init(){
 
     var plane = new THREE.Mesh(planegeometry, planematerial);
     plane.position.set(0,0,0);
-    plane.rotation.set(Math.PI/180 * -70, 0, 0);
+    plane.rotation.set(Math.PI/180 * -90, 0, 0);
     plane.castShadow = true;
     plane.receiveShadow = true;
 
 
 
-    var ambientlight = new THREE.AmbientLight(0xffffff, .3);
-   var light = new THREE.SpotLight( 0xffffee, 1 );
-  // light.angle = Math.PI/4;
+    var ambientlight = new THREE.AmbientLight(0xffffff, .12);
+   var light = new THREE.SpotLight( 0xffffee, .85 );
+    light.angle = Math.PI/10;
     light.castShadow = true;
-   light.position.set(0,110,0);
+   light.position.set(100,240,180);
     
-    camera.position.set(0,0,70);
+    camera.position.set(-45,60,70);
     //camera.lookAt(scene.position);
 
     scene.add(light);
     scene.add(ambientlight);
     scene.add(plane);
 
-    // controls = new THREE.OrbitControls(camera, renderer.domElement);
-    // controls.minDistance = .3;
-    // controls.maxDistance = 200;
-    // controls.enableZoom = false;
-    // controls.autoRotate = false;
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.minDistance = .3;
+    controls.maxDistance = 200;
+    controls.enableZoom = false;
+    controls.autoRotate = false;
 
 
     var makeWaves = function(offset) {
@@ -118,44 +133,50 @@ function init(){
             var vertex = plane.geometry.vertices[i];
             var x = vertex.x;
             var y = vertex.y;
-            
-            var scale = data/15;
-            // var noise = NoiseGen.noise(x, y) * 2; 
-            // vertex.z = noise * scale;
+            var scale = data/8;
+            var center = new THREE.Vector2(0,0);
 
             if(data){
-                vertex.z = NoiseGen.noise( vertex.x / data, vertex.y / data*2 ) * scale; 
+                if(style === 'noise'){
+                    vertex.z = NoiseGen.noise( x / data, y / data*2 ) * scale; 
+                }
+                else if (style === 'wave'){
+                    var dist = new THREE.Vector2(x, y).sub(center);
+                    var size = scale/2;
+                    var magnitude = 2.0;
+                    vertex.z = Math.sin(dist.length()/(scale/2) + scale) * scale/2;
+                }
             }
             else{
                 vertex.z = 0;
             }
+ 
         }
         planegeometry.verticesNeedUpdate = true;
-        //planegeometry.colorsNeedUpdate = true;
+        // planegeometry.colorsNeedUpdate = true;
         planegeometry.computeVertexNormals();
     };
 
     var animate = function(){
         renderer.render( scene, camera );
         requestAnimationFrame( animate );
-        var offset = Date.now() * 0.04;
-      //  makeWaves(offset);
+        var offset = Date.now() * 0.0004;
+        // makeWaves(offset);
 
         var data = analyser.getAverageFrequency();
         //var data = analyser.getFrequencyData(); // Array of frequencies
        
-        adjustMesh(offset, data);
+       adjustMesh(offset, data);
     }
 
     
     animate();
 
     var onWindowResize = function(){
-       
         camera.aspect = domEl.offsetWidth / domEl.offsetHeight;
         camera.updateProjectionMatrix();
-
         renderer.setSize(domEl.offsetWidth, domEl.offsetHeight);
+        console.log(analyser.getFrequencyData());
     };
 
     window.addEventListener( 'resize', onWindowResize, false );
