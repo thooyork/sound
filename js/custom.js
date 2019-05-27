@@ -20,13 +20,15 @@ function init(){
     var camera = new THREE.PerspectiveCamera( 55, domEl.offsetWidth / domEl.offsetHeight, 1, 500 ); 
     var scene = new THREE.Scene();
     //STYLE
-    var stylebtn = document.getElementById('style');
+    var stylebtn = document.getElementById('threecontainer');
     stylebtn.addEventListener('mousedown', function(e){
-        if(style === 'wave'){
-            style = 'noise';
-        }
-        else{
-            style = 'wave';
+        if(sound.isPlaying){
+            if(style === 'wave'){
+                style = 'noise';
+            }
+            else{
+                style = 'wave';
+            }
         }
     });
     //STYLE
@@ -141,9 +143,9 @@ function init(){
                     vertex.z = NoiseGen.noise( x / data, y / data*2 ) * scale; 
                 }
                 else if (style === 'wave'){
-                    var dist = new THREE.Vector2(x, y).sub(center);
+                    var dist = new THREE.Vector2(x,y).sub(center);
                     var size = scale/2;
-                    var magnitude = 2.0;
+                    var magnitude = 4.0;
                     vertex.z = Math.sin(dist.length()/(scale/2) + scale) * scale/2;
                 }
             }

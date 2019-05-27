@@ -32,7 +32,7 @@ html,body{
 .buttoncontainer{
     position:absolute;
     z-index:2;
-    top:12%;
+    top:9%;
     left:50%;
     transform:translateX(-50%);
 }
