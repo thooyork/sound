@@ -21,7 +21,7 @@ function init(){
     var scene = new THREE.Scene();
     //STYLE
     var stylebtn = document.getElementById('threecontainer');
-    stylebtn.addEventListener('mousedown', function(e){
+    stylebtn.addEventListener('dblclick', function(e){
         if(sound.isPlaying){
             if(style === 'wave'){
                 style = 'noise';
@@ -95,11 +95,11 @@ function init(){
 
 
 
-    var ambientlight = new THREE.AmbientLight(0xffffff, .12);
-   var light = new THREE.SpotLight( 0xffffee, .85 );
+    var ambientlight = new THREE.AmbientLight(0xffffff, .4);
+   var light = new THREE.SpotLight( 0xffffff, 1 );
     light.angle = Math.PI/10;
     light.castShadow = true;
-   light.position.set(100,240,180);
+    light.position.set(120,220,-120);
     
     camera.position.set(-45,60,70);
     //camera.lookAt(scene.position);
