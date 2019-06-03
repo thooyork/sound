@@ -34,6 +34,7 @@ function init(){
     //STYLE
 
     //SOUND
+    var loader = document.getElementById('loader');
     var playbtn = document.getElementById('sound');
     playbtn.addEventListener('mousedown', function(e){
         if(!sound.isPlaying){
@@ -63,6 +64,7 @@ function init(){
         sound.setVolume(0.5);
         // sound.play();
         playbtn.style.opacity = 1;
+        loader.style.display = 'none';
     });
    
     // create an AudioAnalyser, passing in the sound and desired fftSize
